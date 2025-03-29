@@ -1,6 +1,6 @@
 # Se-ales-Electromiograficas-EMG
 
-###Adquisición de Datos con NI-DAQmx 
+### Adquisición de Datos con NI-DAQmx 
 
 #### Importante
 Para la realización del código, hay que tener la siguiente libreria instalada en python.
@@ -58,7 +58,7 @@ def adquirir_datos():
             chunk = task.read(number_of_samples_per_channel=SAMPLE_RATE)  
             data[i * SAMPLE_RATE : (i + 1) * SAMPLE_RATE] = chunk  # Almacenar datos adquiridos
             elapsed = time.time() - start_time
-            print(f"⏳ Progreso: {i+1}/{DURATION} segundos ({elapsed:.1f} s transcurridos)", end="\r")
+            print(f"Progreso: {i+1}/{DURATION} segundos ({elapsed:.1f} s transcurridos)", end="\r")
     
     print("\n Adquisición completada.")
     return data
@@ -75,7 +75,7 @@ def adquirir_datos():
 ```
 def verificar_datos(data):
     if np.all(data == 0):
-        print("⚠ Advertencia: No se detecta señal, verifica la conexión.")
+        print("Advertencia: No se detecta señal, verifica la conexión.")
         return False
     if np.std(data) < 0.001:
         print(" Advertencia: La señal parece demasiado estable, ¿es correcto?")
