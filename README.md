@@ -252,3 +252,22 @@ Se grafica la densidad espectral de potencia de toda la señal
 ```
 Este código nos permite analizar señales EMG mediante el método de Welch, evaluando cambios en la frecuencia mediana para determinar la presencia de fatiga muscular. Una disminución en la frecuencia mediana a lo largo del tiempo puede indicar un proceso de fatiga en el músculo analizado.
 
+#### Señal Original
+![image](https://github.com/user-attachments/assets/97aa9763-8032-4348-8919-39d6ddd94c93)
+
+#### Resultado
+![image](https://github.com/user-attachments/assets/1b18948d-6c9d-4c91-b6fe-717d69b923cc)
+
+![image](https://github.com/user-attachments/assets/3872ede9-bd4b-485b-93a8-d730013e450e)
+
+#### Análisis Espectral de la Señal EMG:
+
+- Muestra el espectro de potencia con las medianas de frecuencia inicial y final marcadas.
+
+- La frecuencia mediana inicial y final son ambas 250 Hz, lo que sugiere que no hay un desplazamiento significativo en la frecuencia dominante.
+
+#### Comparación de Espectros Inicial y Final:
+
+Se observa la evolución de la distribución espectral en el tiempo.
+
+Un valor p de 0.0086 indica que hay una diferencia estadísticamente significativa en la distribución espectral entre el inicio y el final.
