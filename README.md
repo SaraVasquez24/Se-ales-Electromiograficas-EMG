@@ -271,3 +271,24 @@ Este código nos permite analizar señales EMG mediante el método de Welch, eva
 Se observa la evolución de la distribución espectral en el tiempo.
 
 Un valor p de 0.0086 indica que hay una diferencia estadísticamente significativa en la distribución espectral entre el inicio y el final.
+
+### Hipotesis
+
+Después de ejecutar `ttest_rel(p_1[:tamano_min], p_2[:tamano_min])`, obtenemos:
+
+- Valor de t: Indica cuán diferente es la potencia espectral entre los dos momentos.
+
+- Valor p: Indica la probabilidad de obtener esos datos si la hipótesis nula fuera cierto
+
+
+Después de ejecutar `ttest_rel(p_1[:tamano_min], p_2[:tamano_min])`, obtenemos:
+
+- Valor de t: Indica cuán diferente es la potencia espectral entre los dos momentos.
+
+- Valor p: Indica la probabilidad de obtener esos datos si la hipótesis nula fuera cier
+
+Si p < 0.05, rechazamos 𝐻0 , lo que sugiere que la potencia espectral cambió significativamente (indicio de fatiga muscular).
+
+Si p > 0.05, no hay suficiente evidencia para rechazar 𝐻0 , por lo que no podemos afirmar que haya fatiga
+
+Este análisis nos ayuda a determinar si la señal  muestra signos de fatiga muscular con el tiempo. Si el valor p es bajo, podemos concluir que el espectro de potencia cambia significativamente, lo que podría indicar fatiga.
