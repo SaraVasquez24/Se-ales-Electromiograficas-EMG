@@ -292,3 +292,11 @@ Si p < 0.05, rechazamos 𝐻0 , lo que sugiere que la potencia espectral cambió
 Si p > 0.05, no hay suficiente evidencia para rechazar 𝐻0 , por lo que no podemos afirmar que haya fatiga
 
 Este análisis nos ayuda a determinar si la señal  muestra signos de fatiga muscular con el tiempo. Si el valor p es bajo, podemos concluir que el espectro de potencia cambia significativamente, lo que podría indicar fatiga.
+
+### Bibliografía
+
+Diong, J. (2016, agosto 11). Python: Analysing EMG signals – part 1. Scientifically Sound. https://scientificallysound.org/2016/08/11/python-analysing-emg-signals-part-1/
+
+
+Realizado por:
+Eduard Santiago Alarcon Sanchez y Sara Damaris Vásquez Cardenas
