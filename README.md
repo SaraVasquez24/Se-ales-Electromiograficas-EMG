@@ -1,5 +1,139 @@
 # Se-ales-Electromiograficas-EMG
 
+###Adquisición de Datos con NI-DAQmx 
+
+#### Importante
+Para la realización del código, hay que tener la siguiente libreria instalada en python.
+
+```
+pip install nidaqmx numpy matplotlib
+```
+#### Librerias
+```
+import nidaqmx
+import numpy as np
+import time
+import matplotlib.pyplot as plt
+```
+`nidaqmx` Para interactuar con el hardware de National Instruments.
+
+`numpy` Para almacenar y manipular los datos adquiridos.
+
+`time` Para medir tiempos de ejecución.
+
+`matplotlib.pyplot` Para graficar la señal adquirida.
+
+#### 2. Configuración
+```
+DEVICE_NAME = "Dev1"      # Nombre del dispositivo DAQ
+CHANNEL = "ai1"          # Canal de entrada analógica
+SAMPLE_RATE = 1000       # Frecuencia de muestreo en Hz
+DURATION = 120           # Duración de la adquisición en segundos (2 minutos)
+FILENAME_NPY = "datos_señal.npy"  # Archivo para guardar en formato NumPy
+```
+`DEVICE_NAME` Nombre del dispositivo DAQ configurado en NI MAX.
+
+`CHANNEL` Canal de entrada analógica donde se conectará la señal.
+
+`SAMPLE_RATE` Frecuencia de muestreo en Hertzios (Hz).
+
+`DURATION` Duración total de la adquisición en segundos.
+
+`FILENAME_NPY` Nombre del archivo donde se guardarán los datos.
+
+#### 3. Adquirir datos
+```
+def adquirir_datos():
+    num_samples = SAMPLE_RATE * DURATION  # Número total de muestras
+    data = np.zeros(num_samples)  # Inicializar array vacío
+    
+    with nidaqmx.Task() as task:
+        task.ai_channels.add_ai_voltage_chan(f"{DEVICE_NAME}/{CHANNEL}")
+        task.timing.cfg_samp_clk_timing(SAMPLE_RATE, samps_per_chan=num_samples)
+
+        print(f"Adquiriendo datos durante {DURATION // 60} minutos...")
+        start_time = time.time()
+
+        for i in range(DURATION):
+            chunk = task.read(number_of_samples_per_channel=SAMPLE_RATE)  
+            data[i * SAMPLE_RATE : (i + 1) * SAMPLE_RATE] = chunk  # Almacenar datos adquiridos
+            elapsed = time.time() - start_time
+            print(f"⏳ Progreso: {i+1}/{DURATION} segundos ({elapsed:.1f} s transcurridos)", end="\r")
+    
+    print("\n Adquisición completada.")
+    return data
+```
+- Se configura y abre una tarea NI-DAQmx para adquirir datos de un canal analógico.
+
+- Se establece una frecuencia de muestreo definida.
+
+- Se adquiere la señal en segmentos de 1 segundo para optimizar la captura.
+
+- Se almacena en un array de NumPy para su posterior análisis.
+
+#### 4. Verificación de datos
+```
+def verificar_datos(data):
+    if np.all(data == 0):
+        print("⚠ Advertencia: No se detecta señal, verifica la conexión.")
+        return False
+    if np.std(data) < 0.001:
+        print(" Advertencia: La señal parece demasiado estable, ¿es correcto?")
+        return False
+    print(" Señal detectada correctamente.")
+    return True
+```
+
+- Se revisa si los datos adquiridos contienen solo ceros lo que posible fallo de conexión.
+
+- Se evalúa si la señal es demasiado estable, lo que podría indicar una medición incorrecta.
+
+- Si los datos son válidos, se confirma la correcta adquisición.
+
+#### 5. Guardar datos
+
+```
+def guardar_datos_npy(data, filename):
+    np.save(filename, data)
+    print(f" Datos guardados en {filename}")
+```
+Guarda los datos adquiridos en un archivo `.npy` para facilitar su carga en Python.
+
+#### 6. Visualización de la señal
+```
+def graficar_datos(data):
+    tiempo = np.arange(0, len(data)) / SAMPLE_RATE  # Crear vector de tiempo
+
+    plt.figure(figsize=(12, 5))
+    
+    if len(data) > 50000:
+        step = len(data) // 50000
+        plt.plot(tiempo[::step], data[::step], label="Señal adquirida (muestra reducida)", color='b', linewidth=0.5)
+    else:
+        plt.plot(tiempo, data, label="Señal adquirida", color='b', linewidth=0.5)
+
+    plt.xlabel("Tiempo (s)")
+    plt.ylabel("Voltaje (V)")
+    plt.title("Señal Adquirida desde DAQ")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+```
+- Genera una gráfica de la señal adquirida.
+
+- Si hay demasiados datos, selecciona una muestra representativa para evitar sobrecargar la visualización.
+
+#### Ejecición
+
+```
+datos = adquirir_datos()
+if verificar_datos(datos):
+    guardar_datos_npy(datos, FILENAME_NPY)
+    graficar_datos(datos)
+```
+
+
+
 ### Análisis de Fatiga Muscular a partir de Señales EMG
 
 Este código analiza señales de electromiografía (EMG) para evaluar la fatiga muscular mediante procesamiento de señales y análisis espectral. Se hace una división temporal de la señal, comparando el espectro de potencia de la primera y la segunda mitad para identificar cambios en la frecuencia dominante, los cuales pueden estar asociados con la fatiga muscular.
