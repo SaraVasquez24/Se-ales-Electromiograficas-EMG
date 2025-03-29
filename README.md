@@ -218,9 +218,18 @@ def evaluar_fatiga(emg_signal, sampling_rate):
 ```
 tamano_min = min(len(p_1), len(p_2))
     t_stat, p_valor = ttest_rel(p_1[:tamano_min], p_2[:tamano_min])
+
+frecuencia_dominante = freqs[np.argmax(spectrum)]
+    frecuencia_media = np.sum(freqs * spectrum) / np.sum(spectrum)
+    desviacion_estandar = np.sqrt(np.sum((freqs - frecuencia_media)**2 * spectrum) / np.sum(spectrum))
+    
+    return frecuencia_dominante, frecuencia_media, desviacion_estandar
 ```
 Se imprimen los resultados de la frecuencia mediana y el análisis estadístico
 ```
+ print(f"Frecuencia Dominante Inicial: {fd_ini:.2f} Hz")
+    print(f"Frecuencia Media Inicial: {fm_ini:.2f} Hz")
+    print(f"Desviación Estándar Inicial: {std_ini:.2f} Hz")
 print(f"Frecuencia mediana (inicio): {np.median(f_1):.2f} Hz")
     print(f"Frecuencia mediana (final): {np.median(f_2):.2f} Hz")
     print(f"Prueba de hipótesis (valor p): {p_valor:.4f}")
@@ -251,6 +260,8 @@ Se grafica la densidad espectral de potencia de toda la señal
     plt.show()
 ```
 Este código nos permite analizar señales EMG mediante el método de Welch, evaluando cambios en la frecuencia mediana para determinar la presencia de fatiga muscular. Una disminución en la frecuencia mediana a lo largo del tiempo puede indicar un proceso de fatiga en el músculo analizado.
+
+
 
 #### Señal Original
 ![image](https://github.com/user-attachments/assets/97aa9763-8032-4348-8919-39d6ddd94c93)
